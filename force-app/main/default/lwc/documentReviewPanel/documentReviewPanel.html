@@ -1,0 +1,169 @@
+<template>
+    <lightning-card title="Document Review" icon-name="standard:file">
+        <template lwc:if={isLoading}>
+            <div class="slds-p-around_medium">
+                <lightning-spinner alternative-text="Loading"></lightning-spinner>
+            </div>
+        </template>
+
+        <template lwc:if={hasError}>
+            <div class="slds-p-around_medium">
+                <div class="slds-notify slds-notify_toast slds-theme_error">
+                    <p>{error}</p>
+                </div>
+            </div>
+        </template>
+
+        <template lwc:if={requestDetail}>
+            <div class="slds-p-horizontal_medium">
+                <!-- Request Summary -->
+                <div class="slds-grid slds-wrap slds-m-bottom_medium">
+                    <div class="slds-col slds-size_1-of-2 slds-p-around_x-small">
+                        <p class="slds-text-title_caps">Status</p>
+                        <lightning-badge label={requestDetail.status} class={statusClass}></lightning-badge>
+                    </div>
+                    <div class="slds-col slds-size_1-of-2 slds-p-around_x-small">
+                        <p class="slds-text-title_caps">Request Date</p>
+                        <p><lightning-formatted-date-time value={requestDetail.requestDate}></lightning-formatted-date-time></p>
+                    </div>
+                    <div class="slds-col slds-size_1-of-2 slds-p-around_x-small">
+                        <p class="slds-text-title_caps">Recipient</p>
+                        <p>{requestDetail.recipientEmail}</p>
+                    </div>
+                    <div class="slds-col slds-size_1-of-2 slds-p-around_x-small">
+                        <p class="slds-text-title_caps">File Count</p>
+                        <p>{requestDetail.fileCount}</p>
+                    </div>
+                </div>
+
+                <!-- Source Record Link -->
+                <template lwc:if={requestDetail.sourceRecordId}>
+                    <div class="slds-m-bottom_medium">
+                        <lightning-button 
+                            label="View Source Record" 
+                            onclick={navigateToSourceRecord}
+                            icon-name="utility:new_window">
+                        </lightning-button>
+                    </div>
+                </template>
+
+                <!-- Instructions -->
+                <template lwc:if={requestDetail.instructions}>
+                    <div class="slds-box slds-m-bottom_medium">
+                        <p class="slds-text-title_caps slds-m-bottom_xx-small">Instructions Sent</p>
+                        <p>{requestDetail.instructions}</p>
+                    </div>
+                </template>
+
+                <!-- Files Section -->
+                <template lwc:if={hasFiles}>
+                    <div class="slds-m-bottom_medium">
+                        <div class="slds-grid slds-grid_align-spread slds-m-bottom_small">
+                            <h2 class="slds-text-heading_small">Uploaded Files</h2>
+                            <div>
+                                <lightning-button 
+                                    label="Approve All Pending" 
+                                    onclick={handleApproveAll}
+                                    disabled={noFilesToApprove}
+                                    class="slds-m-right_x-small">
+                                </lightning-button>
+                            </div>
+                        </div>
+
+                        <ul class="slds-has-dividers_bottom-space">
+                            <template for:each={files} for:item="file">
+                                <li key={file.id} class="slds-item slds-p-around_small file-item">
+                                    <div class="slds-grid slds-grid_vertical-align-center">
+                                        <div class="slds-col slds-grow">
+                                            <p class="slds-text-heading_small">{file.title}</p>
+                                            <p class="slds-text-body_small slds-text-color_weak">
+                                                {file.fileExtension} • 
+                                                <lightning-formatted-number value={file.contentSize} style="decimal"></lightning-formatted-number> bytes
+                                            </p>
+                                            <template lwc:if={file.reviewedByName}>
+                                                <p class="slds-text-body_small">
+                                                    Reviewed by {file.reviewedByName} on 
+                                                    <lightning-formatted-date-time value={file.reviewDate}></lightning-formatted-date-time>
+                                                </p>
+                                            </template>
+                                        </div>
+                                        <div class="slds-col slds-no-flex">
+                                            <lightning-badge label={file.reviewStatus}></lightning-badge>
+                                            <template lwc:if={file.isPending}>
+                                                <lightning-button-group class="slds-m-left_small">
+                                                    <lightning-button 
+                                                        label="Approve" 
+                                                        onclick={handleApproveFile}
+                                                        data-id={file.id}>
+                                                    </lightning-button>
+                                                    <lightning-button 
+                                                        label="Reject" 
+                                                        onclick={handleRejectFile}
+                                                        data-id={file.id}>
+                                                    </lightning-button>
+                                                </lightning-button-group>
+                                            </template>
+                                        </div>
+                                    </div>
+                                    <template lwc:if={file.rejectionReason}>
+                                        <p class="slds-text-color_error slds-m-top_xx-small">
+                                            Rejection Reason: {file.rejectionReason}
+                                        </p>
+                                    </template>
+                                </li>
+                            </template>
+                        </ul>
+                    </div>
+                </template>
+
+                <template lwc:else>
+                    <div class="slds-illustration slds-illustration_small slds-p-around_medium">
+                        <p class="slds-text-body_regular slds-text-color_weak">No files uploaded yet.</p>
+                    </div>
+                </template>
+
+                <!-- Commit Actions -->
+                <template lwc:if={canCommit}>
+                    <div class="slds-m-top_large slds-p-top_medium slds-border_top">
+                        <lightning-button 
+                            variant="brand"
+                            label="Commit Approved Files to Source Record"
+                            onclick={handleCommit}
+                            disabled={isCommitting}>
+                        </lightning-button>
+                    </div>
+                </template>
+            </div>
+        </template>
+
+        <!-- Rejection Modal -->
+        <template lwc:if={showRejectModal}>
+            <section class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container">
+                    <header class="slds-modal__header">
+                        <h2 class="slds-modal__title">Reject File</h2>
+                    </header>
+                    <div class="slds-modal__content slds-p-around_medium">
+                        <lightning-textarea
+                            label="Rejection Reason"
+                            value={rejectionReason}
+                            onchange={handleReasonChange}
+                            required>
+                        </lightning-textarea>
+                    </div>
+                    <footer class="slds-modal__footer">
+                        <lightning-button label="Cancel" onclick={closeRejectModal}></lightning-button>
+                        <lightning-button 
+                            variant="destructive" 
+                            label="Reject" 
+                            onclick={confirmReject}
+                            class="slds-m-left_x-small">
+                        </lightning-button>
+                    </footer>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+        </template>
+    </lightning-card>
+</template>
+

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Allowed_File_Extensions__c</fullName>
+    <defaultValue>"pdf,jpg,jpeg,png,doc,docx,xls,xlsx"</defaultValue>
+    <fieldManageability>DeveloperControlled</fieldManageability>
+    <label>Allowed File Extensions</label>
+    <length>255</length>
+    <required>false</required>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>
+
