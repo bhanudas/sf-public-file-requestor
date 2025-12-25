@@ -2,6 +2,7 @@
 <CustomMetadata
   xmlns="http://soap.sforce.com/2006/04/metadata"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
 >
     <label>Case Document Request</label>
     <protected>false</protected>
