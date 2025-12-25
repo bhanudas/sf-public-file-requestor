@@ -10,6 +10,10 @@
         <application>Document_Requests</application>
         <visible>true</visible>
     </applicationVisibilities>
+    <applicationVisibilities>
+        <application>Document_Request_Console</application>
+        <visible>true</visible>
+    </applicationVisibilities>
     
     <objectPermissions>
         <allowCreate>true</allowCreate>
