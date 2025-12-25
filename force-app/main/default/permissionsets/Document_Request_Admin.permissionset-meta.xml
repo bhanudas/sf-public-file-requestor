@@ -1,7 +1,8 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
     <label>Document Request Admin</label>
-    <description>Full access to Document Request functionality for administrators</description>
+    <description
+  >Full access to Document Request functionality for administrators</description>
     <hasActivationRequired>false</hasActivationRequired>
     <license>Salesforce</license>
     
@@ -139,5 +140,9 @@
         <apexClass>ExpireDocumentRequestsBatch</apexClass>
         <enabled>true</enabled>
     </classAccesses>
+    
+    <tabSettings>
+        <tab>Document_Request__c</tab>
+        <visibility>Visible</visibility>
+    </tabSettings>
 </PermissionSet>
-

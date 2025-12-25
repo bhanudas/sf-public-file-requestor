@@ -1,133 +1,155 @@
 <template>
-    <!-- Loading State -->
-    <template lwc:if={isLoading}>
-        <div class="slds-align_absolute-center slds-p-around_large">
-            <lightning-spinner alternative-text="Validating request..."></lightning-spinner>
+  <!-- Loading State -->
+  <template lwc:if={isLoading}>
+    <div class="slds-align_absolute-center slds-p-around_large">
+      <lightning-spinner
+        alternative-text="Validating request..."
+      ></lightning-spinner>
+    </div>
+  </template>
+
+  <!-- Invalid Token State -->
+  <template lwc:if={isInvalid}>
+    <div class="container">
+      <div class="error-card">
+        <lightning-icon
+          icon-name="utility:error"
+          size="large"
+          variant="error"
+        ></lightning-icon>
+        <h1 class="slds-text-heading_large slds-m-top_medium">
+          Request Not Found
+        </h1>
+        <p class="slds-m-top_small">
+          <template lwc:if={isExpired}>
+            This document request has expired. Please contact the sender for a
+            new link.
+          </template>
+          <template lwc:else>
+            This link is invalid or has already been processed.
+          </template>
+        </p>
+        <p class="slds-m-top_medium slds-text-body_small">
+          If you believe this is an error, please contact support.
+        </p>
+      </div>
+    </div>
+  </template>
+
+  <!-- Valid Token - Upload Form -->
+  <template lwc:if={isValid}>
+    <div class="container">
+      <div class="upload-card">
+        <h1 class="slds-text-heading_large">Document Upload</h1>
+
+        <!-- Request Info -->
+        <div class="slds-box slds-m-top_medium slds-m-bottom_medium info-box">
+          <p><strong>Request Number:</strong> {requestNumber}</p>
+          <p><strong>Request Date:</strong> {requestDate}</p>
         </div>
-    </template>
 
-    <!-- Invalid Token State -->
-    <template lwc:if={isInvalid}>
-        <div class="container">
-            <div class="error-card">
-                <lightning-icon icon-name="utility:error" size="large" variant="error"></lightning-icon>
-                <h1 class="slds-text-heading_large slds-m-top_medium">Request Not Found</h1>
-                <p class="slds-m-top_small">
-                    <template lwc:if={isExpired}>
-                        This document request has expired. Please contact the sender for a new link.
-                    </template>
-                    <template lwc:else>
-                        This link is invalid or has already been processed.
-                    </template>
-                </p>
-                <p class="slds-m-top_medium slds-text-body_small">
-                    If you believe this is an error, please contact support.
-                </p>
-            </div>
+        <!-- Instructions -->
+        <template lwc:if={instructions}>
+          <div class="slds-m-bottom_medium">
+            <h2 class="slds-text-heading_small">Instructions</h2>
+            <p class="slds-m-top_x-small">{instructions}</p>
+          </div>
+        </template>
+
+        <!-- Upload Limits Info -->
+        <div class="slds-text-body_small slds-m-bottom_medium limits-info">
+          <p>Maximum file size: {maxFileSizeMB} MB</p>
+          <p>Maximum files: {maxFilesPerUpload}</p>
+          <p>Allowed types: {allowedExtensionsDisplay}</p>
         </div>
-    </template>
 
-    <!-- Valid Token - Upload Form -->
-    <template lwc:if={isValid}>
-        <div class="container">
-            <div class="upload-card">
-                <h1 class="slds-text-heading_large">Document Upload</h1>
-                
-                <!-- Request Info -->
-                <div class="slds-box slds-m-top_medium slds-m-bottom_medium info-box">
-                    <p><strong>Request Number:</strong> {requestNumber}</p>
-                    <p><strong>Request Date:</strong> {requestDate}</p>
-                </div>
+        <!-- File Input -->
+        <lightning-input
+          type="file"
+          label="Select Files"
+          accept={acceptedFileTypes}
+          multiple
+          onchange={handleFileChange}
+          disabled={isUploading}
+        >
+        </lightning-input>
 
-                <!-- Instructions -->
-                <template lwc:if={instructions}>
-                    <div class="slds-m-bottom_medium">
-                        <h2 class="slds-text-heading_small">Instructions</h2>
-                        <p class="slds-m-top_x-small">{instructions}</p>
-                    </div>
-                </template>
+        <!-- Selected Files Preview -->
+        <template lwc:if={hasSelectedFiles}>
+          <div class="slds-m-top_medium">
+            <h3 class="slds-text-heading_small">Selected Files</h3>
+            <ul class="slds-list_dotted slds-m-top_x-small">
+              <template for:each={selectedFiles} for:item="file">
+                <li key={file.name}>{file.name} ({file.sizeDisplay})</li>
+              </template>
+            </ul>
+          </div>
+        </template>
 
-                <!-- Upload Limits Info -->
-                <div class="slds-text-body_small slds-m-bottom_medium limits-info">
-                    <p>Maximum file size: {maxFileSizeMB} MB</p>
-                    <p>Maximum files: {maxFilesPerUpload}</p>
-                    <p>Allowed types: {allowedExtensionsDisplay}</p>
-                </div>
+        <!-- Validation Errors -->
+        <template lwc:if={validationError}>
+          <div
+            class="slds-notify slds-notify_toast slds-theme_error slds-m-top_medium"
+            role="alert"
+          >
+            <p>{validationError}</p>
+          </div>
+        </template>
 
-                <!-- File Input -->
-                <lightning-input
-                    type="file"
-                    label="Select Files"
-                    accept={acceptedFileTypes}
-                    multiple
-                    onchange={handleFileChange}
-                    disabled={isUploading}>
-                </lightning-input>
-
-                <!-- Selected Files Preview -->
-                <template lwc:if={hasSelectedFiles}>
-                    <div class="slds-m-top_medium">
-                        <h3 class="slds-text-heading_small">Selected Files</h3>
-                        <ul class="slds-list_dotted slds-m-top_x-small">
-                            <template for:each={selectedFiles} for:item="file">
-                                <li key={file.name}>
-                                    {file.name} ({file.sizeDisplay})
-                                </li>
-                            </template>
-                        </ul>
-                    </div>
-                </template>
-
-                <!-- Validation Errors -->
-                <template lwc:if={validationError}>
-                    <div class="slds-notify slds-notify_toast slds-theme_error slds-m-top_medium" role="alert">
-                        <p>{validationError}</p>
-                    </div>
-                </template>
-
-                <!-- Upload Button -->
-                <div class="slds-m-top_large">
-                    <lightning-button
-                        variant="brand"
-                        label="Upload Documents"
-                        onclick={handleUpload}
-                        disabled={uploadDisabled}>
-                    </lightning-button>
-                </div>
-
-                <!-- Upload Progress -->
-                <template lwc:if={isUploading}>
-                    <div class="slds-m-top_medium">
-                        <lightning-spinner alternative-text="Uploading..."></lightning-spinner>
-                        <p class="slds-text-align_center slds-m-top_small">Uploading files...</p>
-                    </div>
-                </template>
-            </div>
+        <!-- Upload Button -->
+        <div class="slds-m-top_large">
+          <lightning-button
+            variant="brand"
+            label="Upload Documents"
+            onclick={handleUpload}
+            disabled={uploadDisabled}
+          >
+          </lightning-button>
         </div>
-    </template>
 
-    <!-- Success State -->
-    <template lwc:if={isSuccess}>
-        <div class="container">
-            <div class="success-card">
-                <lightning-icon icon-name="utility:success" size="large" variant="success"></lightning-icon>
-                <h1 class="slds-text-heading_large slds-m-top_medium">Upload Successful!</h1>
-                <p class="slds-m-top_small">
-                    {filesUploadedCount} file(s) have been uploaded successfully.
-                </p>
-                <p class="slds-m-top_medium">
-                    Your documents have been received and are pending review. 
-                    We will contact you if additional information is needed.
-                </p>
-                <div class="slds-m-top_large">
-                    <lightning-button
-                        variant="brand"
-                        label="Upload More Files"
-                        onclick={handleUploadMore}>
-                    </lightning-button>
-                </div>
-            </div>
+        <!-- Upload Progress -->
+        <template lwc:if={isUploading}>
+          <div class="slds-m-top_medium">
+            <lightning-spinner
+              alternative-text="Uploading..."
+            ></lightning-spinner>
+            <p class="slds-text-align_center slds-m-top_small">
+              Uploading files...
+            </p>
+          </div>
+        </template>
+      </div>
+    </div>
+  </template>
+
+  <!-- Success State -->
+  <template lwc:if={isSuccess}>
+    <div class="container">
+      <div class="success-card">
+        <lightning-icon
+          icon-name="utility:success"
+          size="large"
+          variant="success"
+        ></lightning-icon>
+        <h1 class="slds-text-heading_large slds-m-top_medium">
+          Upload Successful!
+        </h1>
+        <p class="slds-m-top_small">
+          {filesUploadedCount} file(s) have been uploaded successfully.
+        </p>
+        <p class="slds-m-top_medium">
+          Your documents have been received and are pending review. We will
+          contact you if additional information is needed.
+        </p>
+        <div class="slds-m-top_large">
+          <lightning-button
+            variant="brand"
+            label="Upload More Files"
+            onclick={handleUploadMore}
+          >
+          </lightning-button>
         </div>
-    </template>
+      </div>
+    </div>
+  </template>
 </template>
-

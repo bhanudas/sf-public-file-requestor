@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Upload_Source__c</fullName>
     <label>Upload Source</label>
@@ -27,4 +27,3 @@
         </valueSetDefinition>
     </valueSet>
 </CustomField>
-

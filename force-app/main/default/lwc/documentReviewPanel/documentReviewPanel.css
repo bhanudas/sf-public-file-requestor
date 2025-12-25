@@ -1,24 +1,23 @@
 .file-item {
-    background-color: #fafafa;
-    border-radius: 4px;
+  background-color: #fafafa;
+  border-radius: 4px;
 }
 
 .file-item:hover {
-    background-color: #f3f3f3;
+  background-color: #f3f3f3;
 }
 
 .slds-badge_success {
-    background-color: #2e844a;
-    color: white;
+  background-color: #2e844a;
+  color: white;
 }
 
 .slds-badge_error {
-    background-color: #c23934;
-    color: white;
+  background-color: #c23934;
+  color: white;
 }
 
 .slds-badge_warning {
-    background-color: #fe9339;
-    color: white;
+  background-color: #fe9339;
+  color: white;
 }
-

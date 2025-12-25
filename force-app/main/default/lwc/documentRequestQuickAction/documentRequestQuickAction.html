@@ -1,91 +1,97 @@
 <template>
-    <template lwc:if={isLoading}>
-        <lightning-spinner alternative-text="Loading"></lightning-spinner>
-    </template>
+  <template lwc:if={isLoading}>
+    <lightning-spinner alternative-text="Loading"></lightning-spinner>
+  </template>
 
-    <template lwc:if={error}>
-        <div class="slds-notify slds-notify_alert slds-alert_error" role="alert">
-            <h2>{error}</h2>
+  <template lwc:if={error}>
+    <div class="slds-notify slds-notify_alert slds-alert_error" role="alert">
+      <h2>{error}</h2>
+    </div>
+  </template>
+
+  <template lwc:if={showForm}>
+    <lightning-card>
+      <div class="slds-p-around_medium">
+        <!-- Recipient Info -->
+        <div class="slds-box slds-m-bottom_medium">
+          <div class="slds-text-heading_small slds-m-bottom_x-small">
+            Recipient Information
+          </div>
+          <p><strong>Name:</strong> {recipientName}</p>
+          <p><strong>Email:</strong> {recipientEmail}</p>
         </div>
-    </template>
 
-    <template lwc:if={showForm}>
-        <lightning-card>
-            <div class="slds-p-around_medium">
-                <!-- Recipient Info -->
-                <div class="slds-box slds-m-bottom_medium">
-                    <div class="slds-text-heading_small slds-m-bottom_x-small">Recipient Information</div>
-                    <p><strong>Name:</strong> {recipientName}</p>
-                    <p><strong>Email:</strong> {recipientEmail}</p>
-                </div>
-
-                <!-- Configuration Info -->
-                <div class="slds-box slds-m-bottom_medium slds-theme_shade">
-                    <div class="slds-text-body_small">
-                        <p><strong>Max File Size:</strong> {maxFileSizeMB} MB</p>
-                        <p><strong>Allowed Types:</strong> {allowedExtensions}</p>
-                    </div>
-                </div>
-
-                <!-- Form Fields -->
-                <lightning-textarea
-                    label="Request Instructions"
-                    value={requestInstructions}
-                    onchange={handleInstructionsChange}
-                    required
-                    max-length="4000"
-                    placeholder="Describe what documents you need from the recipient..."
-                    class="slds-m-bottom_medium">
-                </lightning-textarea>
-
-                <lightning-textarea
-                    label="Internal Notes (not sent to recipient)"
-                    value={internalNotes}
-                    onchange={handleNotesChange}
-                    max-length="4000"
-                    class="slds-m-bottom_medium">
-                </lightning-textarea>
-
-                <lightning-input
-                    type="number"
-                    label="Expiration Days (optional)"
-                    value={expirationDays}
-                    onchange={handleExpirationChange}
-                    min="1"
-                    max="30"
-                    placeholder={defaultExpirationDays}
-                    class="slds-m-bottom_medium">
-                </lightning-input>
-
-                <!-- Actions -->
-                <div class="slds-m-top_medium">
-                    <lightning-button
-                        label="Cancel"
-                        onclick={handleCancel}
-                        class="slds-m-right_x-small">
-                    </lightning-button>
-                    <lightning-button
-                        variant="brand"
-                        label="Send Request"
-                        onclick={handleSubmit}
-                        disabled={isSubmitting}>
-                    </lightning-button>
-                </div>
-            </div>
-        </lightning-card>
-    </template>
-
-    <template lwc:if={showSuccess}>
-        <div class="slds-notify slds-notify_toast slds-theme_success" role="status">
-            <div class="slds-notify__content">
-                <h2 class="slds-text-heading_small">Request Created Successfully!</h2>
-                <p>Request Number: {createdRequestName}</p>
-                <p>An email has been sent to {recipientEmail}</p>
-            </div>
+        <!-- Configuration Info -->
+        <div class="slds-box slds-m-bottom_medium slds-theme_shade">
+          <div class="slds-text-body_small">
+            <p><strong>Max File Size:</strong> {maxFileSizeMB} MB</p>
+            <p><strong>Allowed Types:</strong> {allowedExtensions}</p>
+          </div>
         </div>
-        <div class="slds-m-top_medium slds-align_absolute-center">
-            <lightning-button label="Close" onclick={handleClose}></lightning-button>
+
+        <!-- Form Fields -->
+        <lightning-textarea
+          label="Request Instructions"
+          value={requestInstructions}
+          onchange={handleInstructionsChange}
+          required
+          max-length="4000"
+          placeholder="Describe what documents you need from the recipient..."
+          class="slds-m-bottom_medium"
+        >
+        </lightning-textarea>
+
+        <lightning-textarea
+          label="Internal Notes (not sent to recipient)"
+          value={internalNotes}
+          onchange={handleNotesChange}
+          max-length="4000"
+          class="slds-m-bottom_medium"
+        >
+        </lightning-textarea>
+
+        <lightning-input
+          type="number"
+          label="Expiration Days (optional)"
+          value={expirationDays}
+          onchange={handleExpirationChange}
+          min="1"
+          max="30"
+          placeholder={defaultExpirationDays}
+          class="slds-m-bottom_medium"
+        >
+        </lightning-input>
+
+        <!-- Actions -->
+        <div class="slds-m-top_medium">
+          <lightning-button
+            label="Cancel"
+            onclick={handleCancel}
+            class="slds-m-right_x-small"
+          >
+          </lightning-button>
+          <lightning-button
+            variant="brand"
+            label="Send Request"
+            onclick={handleSubmit}
+            disabled={isSubmitting}
+          >
+          </lightning-button>
         </div>
-    </template>
+      </div>
+    </lightning-card>
+  </template>
+
+  <template lwc:if={showSuccess}>
+    <div class="slds-notify slds-notify_toast slds-theme_success" role="status">
+      <div class="slds-notify__content">
+        <h2 class="slds-text-heading_small">Request Created Successfully!</h2>
+        <p>Request Number: {createdRequestName}</p>
+        <p>An email has been sent to {recipientEmail}</p>
+      </div>
+    </div>
+    <div class="slds-m-top_medium slds-align_absolute-center">
+      <lightning-button label="Close" onclick={handleClose}></lightning-button>
+    </div>
+  </template>
 </template>
-
