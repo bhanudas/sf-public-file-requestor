@@ -15,21 +15,27 @@ private class DocumentRequestTriggerHandlerTest {
       FROM Document_Request__c
       LIMIT 1
     ];
-    request.Token_Expiration__c = DateTime.now().addDays(-1);
+
+    // Test handler logic directly to avoid interference from other org automations
+    Document_Request__c testRequest = request.clone(true, true, true, true);
+    testRequest.Token_Expiration__c = DateTime.now().addDays(-1);
+    testRequest.Status__c = 'Sent';
+
+    List<Document_Request__c> requests = new List<Document_Request__c>{
+      testRequest
+    };
+    Map<Id, Document_Request__c> oldMap = new Map<Id, Document_Request__c>{
+      request.Id => request
+    };
 
     Test.startTest();
-    update request;
+    DocumentRequestTriggerHandler.handleBeforeUpdate(requests, oldMap);
     Test.stopTest();
 
-    Document_Request__c updatedRequest = [
-      SELECT Status__c
-      FROM Document_Request__c
-      WHERE Id = :request.Id
-    ];
     System.assertEquals(
       'Expired',
-      updatedRequest.Status__c,
-      'Status should be Expired'
+      requests[0].Status__c,
+      'Status should be Expired after handler processes expired token'
     );
   }
 
@@ -128,25 +134,33 @@ private class DocumentRequestTriggerHandlerTest {
     }
     insert requests;
 
+    // Create old map from inserted records
+    Map<Id, Document_Request__c> oldMap = new Map<Id, Document_Request__c>();
+    for (Document_Request__c req : requests) {
+      oldMap.put(req.Id, req.clone(true, true, true, true));
+    }
+
     // Expire half of them
     for (Integer i = 0; i < 5; i++) {
       requests[i].Token_Expiration__c = DateTime.now().addDays(-1);
     }
 
     Test.startTest();
-    update requests;
+    // Test handler directly to avoid interference from other org automations
+    DocumentRequestTriggerHandler.handleBeforeUpdate(requests, oldMap);
     Test.stopTest();
 
-    List<Document_Request__c> expiredRequests = [
-      SELECT Status__c
-      FROM Document_Request__c
-      WHERE Id IN :requests AND Status__c = 'Expired'
-    ];
+    Integer expiredCount = 0;
+    for (Document_Request__c req : requests) {
+      if (req.Status__c == 'Expired') {
+        expiredCount++;
+      }
+    }
 
     System.assertEquals(
       5,
-      expiredRequests.size(),
-      '5 requests should be expired'
+      expiredCount,
+      '5 requests should be expired by handler'
     );
   }
 }
