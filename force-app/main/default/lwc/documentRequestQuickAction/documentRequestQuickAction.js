@@ -1,6 +1,7 @@
 import { LightningElement, api } from "lwc";
 import { CloseActionScreenEvent } from "lightning/actions";
 import createDocumentRequest from "@salesforce/apex/DocumentRequestService.createDocumentRequest";
+import getRecipientInfoForLwc from "@salesforce/apex/DocumentRequestService.getRecipientInfoForLwc";
 
 export default class DocumentRequestQuickAction extends LightningElement {
   @api recordId;
@@ -23,6 +24,7 @@ export default class DocumentRequestQuickAction extends LightningElement {
 
   createdRequestId = null;
   createdRequestName = "";
+  sentToEmail = "";
 
   connectedCallback() {
     this.loadRecipientInfo();
@@ -30,26 +32,26 @@ export default class DocumentRequestQuickAction extends LightningElement {
 
   async loadRecipientInfo() {
     this.isLoading = true;
+    this.error = null;
     try {
-      // For now, show the form with placeholder values
-      // In production, this would query the config and recipient info
-      this.showForm = true;
-      this.recipientName = "Loading...";
-      this.recipientEmail = "Loading...";
-
-      // Simulated delay then show form
-      // eslint-disable-next-line @lwc/lwc/no-async-operation
-      Promise.resolve().then(() => {
-        this.isLoading = false;
-        // These would be populated from the Apex controller
-        if (!this.recipientEmail || this.recipientEmail === "Loading...") {
-          this.recipientName = "Recipient";
-          this.recipientEmail = "recipient@example.com";
-        }
+      const result = await getRecipientInfoForLwc({
+        sourceRecordId: this.recordId,
+        sourceObjectApiName: this.objectApiName
       });
-    } catch (error) {
-      this.error =
-        error.body?.message || "Failed to load recipient information";
+
+      this.recipientName = result.name || "Recipient";
+      this.recipientEmail = result.email || "";
+
+      if (!this.recipientEmail) {
+        this.error = "No email address found for the recipient on this record.";
+        this.showForm = false;
+      } else {
+        this.showForm = true;
+      }
+    } catch (err) {
+      this.error = err.body?.message || "Failed to load recipient information";
+      this.showForm = false;
+    } finally {
       this.isLoading = false;
     }
   }
@@ -88,10 +90,11 @@ export default class DocumentRequestQuickAction extends LightningElement {
 
       this.createdRequestId = result.requestId;
       this.createdRequestName = result.requestName;
+      this.sentToEmail = result.recipientEmail || this.recipientEmail;
       this.showForm = false;
       this.showSuccess = true;
-    } catch (error) {
-      this.error = error.body?.message || "Failed to create document request";
+    } catch (err) {
+      this.error = err.body?.message || "Failed to create document request";
     } finally {
       this.isSubmitting = false;
     }

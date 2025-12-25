@@ -137,6 +137,11 @@
         <readable>true</readable>
     </fieldPermissions>
     
+    <customSettingAccesses>
+        <enabled>true</enabled>
+        <name>Document_Request_Settings__c</name>
+    </customSettingAccesses>
+    
     <classAccesses>
         <apexClass>DocumentRequestConfigService</apexClass>
         <enabled>true</enabled>

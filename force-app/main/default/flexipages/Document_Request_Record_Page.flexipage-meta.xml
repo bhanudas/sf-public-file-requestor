@@ -23,12 +23,6 @@
         </itemInstances>
         <itemInstances>
             <componentInstance>
-                <componentName>force:recordDetailPanel</componentName>
-                <identifier>force_recordDetailPanel</identifier>
-            </componentInstance>
-        </itemInstances>
-        <itemInstances>
-            <componentInstance>
                 <componentInstanceProperties>
                     <name>relatedListComponentOverride</name>
                     <value>NONE</value>

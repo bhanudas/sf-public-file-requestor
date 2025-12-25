@@ -266,12 +266,18 @@ private class DocumentRequestServiceTest {
   static void testDocumentRequestResultClass() {
     DocumentRequestService.DocumentRequestResult result = new DocumentRequestService.DocumentRequestResult(
       null,
-      'REQ-00001'
+      'REQ-00001',
+      'test@example.com'
     );
     System.assertEquals(
       'REQ-00001',
       result.requestName,
       'Request name should match'
+    );
+    System.assertEquals(
+      'test@example.com',
+      result.recipientEmail,
+      'Recipient email should match'
     );
   }
 
@@ -860,6 +866,150 @@ private class DocumentRequestServiceTest {
       3,
       sourceLinks.size(),
       'All 3 files should be linked to source'
+    );
+  }
+
+  @isTest
+  static void testGetRecipientInfoForLwc() {
+    // Create test data
+    Account acc = DocReqTestDataFactory.createAccount('Test Account', true);
+    Contact con = DocReqTestDataFactory.createContact(
+      acc.Id,
+      'John',
+      'Doe',
+      'john.doe@test.com',
+      true
+    );
+    Case c = DocReqTestDataFactory.createCase(con.Id, 'Test Case', true);
+
+    // Set up mock configuration
+    Document_Request_Config__mdt mockConfig = DocumentRequestConfigService.createMockConfig(
+      'Case_Document_Request',
+      'Case',
+      'Contact.Email',
+      'Contact.Name',
+      'ContactId'
+    );
+    DocumentRequestConfigService.setMockConfig('Case', mockConfig);
+
+    Test.startTest();
+    DocumentRequestService.RecipientInfoResult result = DocumentRequestService.getRecipientInfoForLwc(
+      c.Id,
+      'Case'
+    );
+    Test.stopTest();
+
+    DocumentRequestConfigService.clearMocks();
+
+    System.assertEquals(
+      'john.doe@test.com',
+      result.email,
+      'Email should match'
+    );
+    System.assertNotEquals(null, result.name, 'Name should not be null');
+  }
+
+  @isTest
+  static void testGetRecipientInfoForLwc_NoConfig() {
+    Account acc = DocReqTestDataFactory.createAccount('Test Account', true);
+
+    Test.startTest();
+    try {
+      DocumentRequestService.getRecipientInfoForLwc(acc.Id, 'Account');
+      System.assert(false, 'Should have thrown exception');
+    } catch (DocumentRequestService.DocumentRequestException e) {
+      System.assert(
+        e.getMessage().contains('not enabled'),
+        'Error should mention not enabled'
+      );
+    }
+    Test.stopTest();
+  }
+
+  @isTest
+  static void testFileDetailPreviewAndDownloadUrls() {
+    Document_Request__c request = [SELECT Id FROM Document_Request__c LIMIT 1];
+    ContentVersion cv = DocReqTestDataFactory.createLinkedContentVersion(
+      request.Id,
+      'test.pdf',
+      'Portal_Upload',
+      'Pending_Review'
+    );
+
+    Test.startTest();
+    List<DocumentRequestService.FileDetail> files = DocumentRequestService.getRequestFiles(
+      request.Id
+    );
+    Test.stopTest();
+
+    System.assertEquals(1, files.size(), 'Should have one file');
+    System.assertNotEquals(
+      null,
+      files[0].previewUrl,
+      'Preview URL should be set'
+    );
+    System.assertNotEquals(
+      null,
+      files[0].downloadUrl,
+      'Download URL should be set'
+    );
+    System.assert(
+      files[0].previewUrl.contains('renditionDownload'),
+      'Preview URL should contain renditionDownload'
+    );
+    System.assert(
+      files[0].downloadUrl.contains('/download/'),
+      'Download URL should contain /download/'
+    );
+  }
+
+  @isTest
+  static void testRecipientInfoResultClass() {
+    DocumentRequestService.RecipientInfoResult result = new DocumentRequestService.RecipientInfoResult(
+      'John Doe',
+      'john@test.com'
+    );
+    System.assertEquals('John Doe', result.name, 'Name should match');
+    System.assertEquals('john@test.com', result.email, 'Email should match');
+  }
+
+  @isTest
+  static void testCreateDocumentRequest_ReturnsRecipientEmail() {
+    Account acc = DocReqTestDataFactory.createAccount('Test Account', true);
+    Contact con = DocReqTestDataFactory.createContact(
+      acc.Id,
+      'Test',
+      'Contact',
+      'returned@test.com',
+      true
+    );
+    Case c = DocReqTestDataFactory.createCase(con.Id, 'Test Case', true);
+
+    Document_Request_Config__mdt mockConfig = DocumentRequestConfigService.createMockConfig(
+      'Case_Document_Request',
+      'Case',
+      'Contact.Email',
+      'Contact.Name',
+      'ContactId'
+    );
+    DocumentRequestConfigService.setMockConfig('Case', mockConfig);
+
+    Test.startTest();
+    DocumentRequestService.DocumentRequestResult result = DocumentRequestService.createDocumentRequest(
+      c.Id,
+      'Case',
+      'Please provide documents',
+      null,
+      null
+    );
+    Test.stopTest();
+
+    DocumentRequestConfigService.clearMocks();
+
+    System.assertEquals(
+      'returned@test.com',
+      result.recipientEmail,
+      'Recipient email should be returned'
     );
   }
 }
