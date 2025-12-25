@@ -5,21 +5,21 @@
 private class ExpireDocumentRequestsBatchTest {
   @TestSetup
   static void makeData() {
-    Account acc = TestDataFactory.createAccount('Test Account', true);
-    Contact con = TestDataFactory.createContact(
+    Account acc = DocReqTestDataFactory.createAccount('Test Account', true);
+    Contact con = DocReqTestDataFactory.createContact(
       acc.Id,
       'Test',
       'Contact',
       'test@test.com',
       true
     );
-    Case c = TestDataFactory.createCase(con.Id, 'Test Case', true);
+    Case c = DocReqTestDataFactory.createCase(con.Id, 'Test Case', true);
 
     // Create an expired request
-    TestDataFactory.createExpiredDocumentRequest(c.Id, 'Case', true);
+    DocReqTestDataFactory.createExpiredDocumentRequest(c.Id, 'Case', true);
 
     // Create a valid request
-    TestDataFactory.createDocumentRequest(
+    DocReqTestDataFactory.createDocumentRequest(
       c.Id,
       'Case',
       'test@test.com',

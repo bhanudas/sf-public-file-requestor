@@ -3,7 +3,7 @@
  * Provides reusable test data creation methods
  */
 @isTest
-public class TestDataFactory {
+public class DocReqTestDataFactory {
   private static final String DEFAULT_EMAIL = 'test@example.com';
   private static final String DEFAULT_NAME = 'Test Contact';
 

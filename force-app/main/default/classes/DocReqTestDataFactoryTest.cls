@@ -1,12 +1,12 @@
 /**
- * @description Test class for TestDataFactory
+ * @description Test class for DocReqTestDataFactory
  */
 @isTest
-private class TestDataFactoryTest {
+private class DocReqTestDataFactoryTest {
   @isTest
   static void testCreateAccount() {
     Test.startTest();
-    Account acc = TestDataFactory.createAccount('Test Account', true);
+    Account acc = DocReqTestDataFactory.createAccount('Test Account', true);
     Test.stopTest();
 
     System.assertNotEquals(null, acc.Id, 'Account should be created');
@@ -16,7 +16,7 @@ private class TestDataFactoryTest {
   @isTest
   static void testCreateAccount_NoInsert() {
     Test.startTest();
-    Account acc = TestDataFactory.createAccount('Test Account', false);
+    Account acc = DocReqTestDataFactory.createAccount('Test Account', false);
     Test.stopTest();
 
     System.assertEquals(null, acc.Id, 'Account should not be inserted');
@@ -24,10 +24,10 @@ private class TestDataFactoryTest {
 
   @isTest
   static void testCreateContact() {
-    Account acc = TestDataFactory.createAccount('Test', true);
+    Account acc = DocReqTestDataFactory.createAccount('Test', true);
 
     Test.startTest();
-    Contact con = TestDataFactory.createContact(
+    Contact con = DocReqTestDataFactory.createContact(
       acc.Id,
       'First',
       'Last',
@@ -42,10 +42,10 @@ private class TestDataFactoryTest {
 
   @isTest
   static void testCreateContact_NoInsert() {
-    Account acc = TestDataFactory.createAccount('Test', true);
+    Account acc = DocReqTestDataFactory.createAccount('Test', true);
 
     Test.startTest();
-    Contact con = TestDataFactory.createContact(
+    Contact con = DocReqTestDataFactory.createContact(
       acc.Id,
       'First',
       'Last',
@@ -59,8 +59,8 @@ private class TestDataFactoryTest {
 
   @isTest
   static void testCreateCase() {
-    Account acc = TestDataFactory.createAccount('Test', true);
-    Contact con = TestDataFactory.createContact(
+    Account acc = DocReqTestDataFactory.createAccount('Test', true);
+    Contact con = DocReqTestDataFactory.createContact(
       acc.Id,
       'Test',
       'Contact',
@@ -69,7 +69,7 @@ private class TestDataFactoryTest {
     );
 
     Test.startTest();
-    Case c = TestDataFactory.createCase(con.Id, 'Test Subject', true);
+    Case c = DocReqTestDataFactory.createCase(con.Id, 'Test Subject', true);
     Test.stopTest();
 
     System.assertNotEquals(null, c.Id, 'Case should be created');
@@ -78,8 +78,8 @@ private class TestDataFactoryTest {
 
   @isTest
   static void testCreateCase_NoInsert() {
-    Account acc = TestDataFactory.createAccount('Test', true);
-    Contact con = TestDataFactory.createContact(
+    Account acc = DocReqTestDataFactory.createAccount('Test', true);
+    Contact con = DocReqTestDataFactory.createContact(
       acc.Id,
       'Test',
       'Contact',
@@ -88,7 +88,7 @@ private class TestDataFactoryTest {
     );
 
     Test.startTest();
-    Case c = TestDataFactory.createCase(con.Id, 'Test Subject', false);
+    Case c = DocReqTestDataFactory.createCase(con.Id, 'Test Subject', false);
     Test.stopTest();
 
     System.assertEquals(null, c.Id, 'Case should not be inserted');
@@ -96,18 +96,18 @@ private class TestDataFactoryTest {
 
   @isTest
   static void testCreateDocumentRequest() {
-    Account acc = TestDataFactory.createAccount('Test', true);
-    Contact con = TestDataFactory.createContact(
+    Account acc = DocReqTestDataFactory.createAccount('Test', true);
+    Contact con = DocReqTestDataFactory.createContact(
       acc.Id,
       'Test',
       'Contact',
       'test@test.com',
       true
     );
-    Case c = TestDataFactory.createCase(con.Id, 'Test', true);
+    Case c = DocReqTestDataFactory.createCase(con.Id, 'Test', true);
 
     Test.startTest();
-    Document_Request__c req = TestDataFactory.createDocumentRequest(
+    Document_Request__c req = DocReqTestDataFactory.createDocumentRequest(
       c.Id,
       'Case',
       'test@test.com',
@@ -127,18 +127,18 @@ private class TestDataFactoryTest {
 
   @isTest
   static void testCreateDocumentRequest_NoInsert() {
-    Account acc = TestDataFactory.createAccount('Test', true);
-    Contact con = TestDataFactory.createContact(
+    Account acc = DocReqTestDataFactory.createAccount('Test', true);
+    Contact con = DocReqTestDataFactory.createContact(
       acc.Id,
       'Test',
       'Contact',
       'test@test.com',
       true
     );
-    Case c = TestDataFactory.createCase(con.Id, 'Test', true);
+    Case c = DocReqTestDataFactory.createCase(con.Id, 'Test', true);
 
     Test.startTest();
-    Document_Request__c req = TestDataFactory.createDocumentRequest(
+    Document_Request__c req = DocReqTestDataFactory.createDocumentRequest(
       c.Id,
       'Case',
       'test@test.com',
@@ -153,18 +153,18 @@ private class TestDataFactoryTest {
 
   @isTest
   static void testCreateExpiredDocumentRequest() {
-    Account acc = TestDataFactory.createAccount('Test', true);
-    Contact con = TestDataFactory.createContact(
+    Account acc = DocReqTestDataFactory.createAccount('Test', true);
+    Contact con = DocReqTestDataFactory.createContact(
       acc.Id,
       'Test',
       'Contact',
       'test@test.com',
       true
     );
-    Case c = TestDataFactory.createCase(con.Id, 'Test', true);
+    Case c = DocReqTestDataFactory.createCase(con.Id, 'Test', true);
 
     Test.startTest();
-    Document_Request__c req = TestDataFactory.createExpiredDocumentRequest(
+    Document_Request__c req = DocReqTestDataFactory.createExpiredDocumentRequest(
       c.Id,
       'Case',
       true
@@ -180,18 +180,18 @@ private class TestDataFactoryTest {
 
   @isTest
   static void testCreateExpiredDocumentRequest_NoInsert() {
-    Account acc = TestDataFactory.createAccount('Test', true);
-    Contact con = TestDataFactory.createContact(
+    Account acc = DocReqTestDataFactory.createAccount('Test', true);
+    Contact con = DocReqTestDataFactory.createContact(
       acc.Id,
       'Test',
       'Contact',
       'test@test.com',
       true
     );
-    Case c = TestDataFactory.createCase(con.Id, 'Test', true);
+    Case c = DocReqTestDataFactory.createCase(con.Id, 'Test', true);
 
     Test.startTest();
-    Document_Request__c req = TestDataFactory.createExpiredDocumentRequest(
+    Document_Request__c req = DocReqTestDataFactory.createExpiredDocumentRequest(
       c.Id,
       'Case',
       false
@@ -204,7 +204,7 @@ private class TestDataFactoryTest {
   @isTest
   static void testCreateContentVersion() {
     Test.startTest();
-    ContentVersion cv = TestDataFactory.createContentVersion(
+    ContentVersion cv = DocReqTestDataFactory.createContentVersion(
       'test.pdf',
       'Test content',
       'Internal',
@@ -219,7 +219,7 @@ private class TestDataFactoryTest {
   @isTest
   static void testCreateContentVersion_NoInsert() {
     Test.startTest();
-    ContentVersion cv = TestDataFactory.createContentVersion(
+    ContentVersion cv = DocReqTestDataFactory.createContentVersion(
       'test.pdf',
       'Test content',
       'Internal',
@@ -233,13 +233,13 @@ private class TestDataFactoryTest {
 
   @isTest
   static void testCreateLinkedContentVersion() {
-    Map<String, SObject> testData = TestDataFactory.createCompleteTestScenario();
+    Map<String, SObject> testData = DocReqTestDataFactory.createCompleteTestScenario();
     Document_Request__c req = (Document_Request__c) testData.get(
       'Document_Request__c'
     );
 
     Test.startTest();
-    ContentVersion cv = TestDataFactory.createLinkedContentVersion(
+    ContentVersion cv = DocReqTestDataFactory.createLinkedContentVersion(
       req.Id,
       'linked.pdf',
       'Portal_Upload',
@@ -260,7 +260,7 @@ private class TestDataFactoryTest {
 
   @isTest
   static void testCreateContentDocumentLink() {
-    ContentVersion cv = TestDataFactory.createContentVersion(
+    ContentVersion cv = DocReqTestDataFactory.createContentVersion(
       'test.pdf',
       'Test',
       null,
@@ -269,10 +269,10 @@ private class TestDataFactoryTest {
     );
     cv = [SELECT ContentDocumentId FROM ContentVersion WHERE Id = :cv.Id];
 
-    Account acc = TestDataFactory.createAccount('Test', true);
+    Account acc = DocReqTestDataFactory.createAccount('Test', true);
 
     Test.startTest();
-    ContentDocumentLink cdl = TestDataFactory.createContentDocumentLink(
+    ContentDocumentLink cdl = DocReqTestDataFactory.createContentDocumentLink(
       cv.ContentDocumentId,
       acc.Id,
       true
@@ -284,7 +284,7 @@ private class TestDataFactoryTest {
 
   @isTest
   static void testCreateContentDocumentLink_NoInsert() {
-    ContentVersion cv = TestDataFactory.createContentVersion(
+    ContentVersion cv = DocReqTestDataFactory.createContentVersion(
       'test.pdf',
       'Test',
       null,
@@ -293,10 +293,10 @@ private class TestDataFactoryTest {
     );
     cv = [SELECT ContentDocumentId FROM ContentVersion WHERE Id = :cv.Id];
 
-    Account acc = TestDataFactory.createAccount('Test', true);
+    Account acc = DocReqTestDataFactory.createAccount('Test', true);
 
     Test.startTest();
-    ContentDocumentLink cdl = TestDataFactory.createContentDocumentLink(
+    ContentDocumentLink cdl = DocReqTestDataFactory.createContentDocumentLink(
       cv.ContentDocumentId,
       acc.Id,
       false
@@ -309,8 +309,8 @@ private class TestDataFactoryTest {
   @isTest
   static void testGenerateToken() {
     Test.startTest();
-    String token1 = TestDataFactory.generateToken();
-    String token2 = TestDataFactory.generateToken();
+    String token1 = DocReqTestDataFactory.generateToken();
+    String token2 = DocReqTestDataFactory.generateToken();
     Test.stopTest();
 
     System.assertNotEquals(null, token1, 'Token should be generated');
@@ -321,7 +321,7 @@ private class TestDataFactoryTest {
   @isTest
   static void testCreateCompleteTestScenario() {
     Test.startTest();
-    Map<String, SObject> result = TestDataFactory.createCompleteTestScenario();
+    Map<String, SObject> result = DocReqTestDataFactory.createCompleteTestScenario();
     Test.stopTest();
 
     System.assertNotEquals(null, result.get('Account'), 'Should have Account');
@@ -336,13 +336,13 @@ private class TestDataFactoryTest {
 
   @isTest
   static void testCreateTestFilesForRequest() {
-    Map<String, SObject> testData = TestDataFactory.createCompleteTestScenario();
+    Map<String, SObject> testData = DocReqTestDataFactory.createCompleteTestScenario();
     Document_Request__c req = (Document_Request__c) testData.get(
       'Document_Request__c'
     );
 
     Test.startTest();
-    List<ContentVersion> files = TestDataFactory.createTestFilesForRequest(
+    List<ContentVersion> files = DocReqTestDataFactory.createTestFilesForRequest(
       req.Id,
       5
     );
@@ -353,13 +353,13 @@ private class TestDataFactoryTest {
 
   @isTest
   static void testCreateReviewTask() {
-    Map<String, SObject> testData = TestDataFactory.createCompleteTestScenario();
+    Map<String, SObject> testData = DocReqTestDataFactory.createCompleteTestScenario();
     Document_Request__c req = (Document_Request__c) testData.get(
       'Document_Request__c'
     );
 
     Test.startTest();
-    Task t = TestDataFactory.createReviewTask(
+    Task t = DocReqTestDataFactory.createReviewTask(
       req.Id,
       UserInfo.getUserId(),
       true
@@ -372,13 +372,13 @@ private class TestDataFactoryTest {
 
   @isTest
   static void testCreateReviewTask_NoInsert() {
-    Map<String, SObject> testData = TestDataFactory.createCompleteTestScenario();
+    Map<String, SObject> testData = DocReqTestDataFactory.createCompleteTestScenario();
     Document_Request__c req = (Document_Request__c) testData.get(
       'Document_Request__c'
     );
 
     Test.startTest();
-    Task t = TestDataFactory.createReviewTask(
+    Task t = DocReqTestDataFactory.createReviewTask(
       req.Id,
       UserInfo.getUserId(),
       false

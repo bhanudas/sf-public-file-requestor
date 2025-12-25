@@ -5,7 +5,7 @@
 private class DocumentRequestTriggerHandlerTest {
   @TestSetup
   static void makeData() {
-    Map<String, SObject> testData = TestDataFactory.createCompleteTestScenario();
+    Map<String, SObject> testData = DocReqTestDataFactory.createCompleteTestScenario();
   }
 
   @isTest
@@ -116,7 +116,7 @@ private class DocumentRequestTriggerHandlerTest {
     List<Document_Request__c> requests = new List<Document_Request__c>();
     for (Integer i = 0; i < 10; i++) {
       requests.add(
-        TestDataFactory.createDocumentRequest(
+        DocReqTestDataFactory.createDocumentRequest(
           c.Id,
           'Case',
           'test' + i + '@test.com',
