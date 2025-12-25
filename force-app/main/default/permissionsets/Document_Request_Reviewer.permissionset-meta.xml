@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
-    <label>Document Request Admin</label>
+    <label>Document Request Reviewer</label>
     <description
-  >Full access to Document Request functionality for administrators and document reviewers</description>
+  >Access for users who review and approve incoming documents but cannot create new requests</description>
     <hasActivationRequired>false</hasActivationRequired>
     <license>Salesforce</license>
     
@@ -12,8 +12,8 @@
     </applicationVisibilities>
     
     <objectPermissions>
-        <allowCreate>true</allowCreate>
-        <allowDelete>true</allowDelete>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
         <allowEdit>true</allowEdit>
         <allowRead>true</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
@@ -22,17 +22,17 @@
     </objectPermissions>
     
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Document_Request__c.Config_Developer_Name__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Document_Request__c.File_Count__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Document_Request__c.Files_Received_Date__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -42,42 +42,42 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Document_Request__c.Recipient_Contact__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Document_Request__c.Recipient_Email__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Document_Request__c.Recipient_Name__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Document_Request__c.Request_Date__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Document_Request__c.Request_Instructions__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Document_Request__c.Request_Token__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Document_Request__c.Requested_By__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Document_Request__c.Review_Completed_Date__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -87,12 +87,12 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Document_Request__c.Source_Object_API_Name__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Document_Request__c.Source_Record_Id__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -102,7 +102,7 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Document_Request__c.Token_Expiration__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -128,25 +128,13 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>ContentVersion.Upload_Source__c</field>
         <readable>true</readable>
     </fieldPermissions>
     
     <classAccesses>
-        <apexClass>DocumentRequestConfigService</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>DocumentRequestService</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>DocumentRequestTriggerHandler</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>ExpireDocumentRequestsBatch</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     

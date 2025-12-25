@@ -6,7 +6,7 @@ A configurable, object-agnostic secure document collection system for Salesforce
 
 - **Object-Agnostic** — Works with any standard or custom sObject via configuration
 - **Secure Token Access** — UUID-based tokens with configurable expiration
-- **Guest User Upload** — No authentication required for recipients  
+- **Guest User Upload** — No authentication required for recipients
 - **Two-Phase Review** — Admin reviews uploads before committing to source record
 - **Configurable Limits** — File size, count, and type restrictions per use case
 - **Privacy-First** — No sensitive record data exposed to guest users
@@ -44,41 +44,47 @@ A configurable, object-agnostic secure document collection system for Salesforce
 ## Components
 
 ### Custom Metadata
-| Component | Description |
-|-----------|-------------|
+
+| Component                      | Description                                          |
+| ------------------------------ | ---------------------------------------------------- |
 | `Document_Request_Config__mdt` | Object configuration: field paths, limits, templates |
 
 ### Custom Objects
-| Component | Description |
-|-----------|-------------|
+
+| Component             | Description                                            |
+| --------------------- | ------------------------------------------------------ |
 | `Document_Request__c` | Request tracking with secure token and status workflow |
 
 ### Apex Classes
-| Class | Description |
-|-------|-------------|
-| `DocumentRequestConfigService` | Configuration retrieval with mockable CRUD layer |
-| `DocumentRequestService` | Request creation, file review, commit workflow |
-| `GuestDocumentUploadService` | Guest user uploads (without sharing) |
-| `DocumentRequestTriggerHandler` | Token expiration handling |
-| `ExpireDocumentRequestsBatch` | Scheduled cleanup of expired requests |
-| `TestDataFactory` | Reusable test data creation |
+
+| Class                           | Description                                      |
+| ------------------------------- | ------------------------------------------------ |
+| `DocumentRequestConfigService`  | Configuration retrieval with mockable CRUD layer |
+| `DocumentRequestService`        | Request creation, file review, commit workflow   |
+| `GuestDocumentUploadService`    | Guest user uploads (without sharing)             |
+| `DocumentRequestTriggerHandler` | Token expiration handling                        |
+| `ExpireDocumentRequestsBatch`   | Scheduled cleanup of expired requests            |
+| `TestDataFactory`               | Reusable test data creation                      |
 
 ### LWC Components
-| Component | Description |
-|-----------|-------------|
+
+| Component                    | Description                              |
+| ---------------------------- | ---------------------------------------- |
 | `documentRequestQuickAction` | Admin creates request from source record |
-| `guestDocumentUpload` | Portal upload interface for recipients |
-| `documentReviewPanel` | Admin review and commit interface |
+| `guestDocumentUpload`        | Portal upload interface for recipients   |
+| `documentReviewPanel`        | Admin review and commit interface        |
 
 ### Permission Sets
-| Permission Set | Description |
-|----------------|-------------|
-| `Document_Request_Admin` | Full access for administrators |
+
+| Permission Set           | Description                       |
+| ------------------------ | --------------------------------- |
+| `Document_Request_Admin` | Full access for administrators    |
 | `Document_Request_Guest` | Apex class access for guest users |
 
 ## Installation
 
 ### Prerequisites
+
 - Salesforce org with Experience Cloud enabled
 - Salesforce CLI installed
 
@@ -113,6 +119,7 @@ sf apex run test --target-org myorg --test-level RunLocalTests --code-coverage
    - Assign `Document_Request_Guest` permission set to Guest User profile
 
 5. **Schedule Batch Job**
+
    ```apex
    // Run daily at midnight
    ExpireDocumentRequestsBatch.scheduleDaily('Expire Document Requests');
@@ -156,9 +163,9 @@ static void testWithMockConfig() {
         'Test_Config', 'Case', 'Contact.Email', 'Contact.Name', 'ContactId'
     );
     DocumentRequestConfigService.setMockConfig('Case', mockConfig);
-    
+
     // ... run test ...
-    
+
     DocumentRequestConfigService.clearMocks();
 }
 ```
