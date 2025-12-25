@@ -136,7 +136,7 @@ sf apex run test --target-org myorg --test-level RunLocalTests --code-coverage
 1. **Configure Portal URL** (Required for Experience Cloud)
    - Setup → Custom Settings → Document Request Settings → Manage
    - Create Org Default Values:
-     - **Base Domain**: Your Experience Cloud domain (e.g., `www.helenhomestead.com`)
+     - **Base Domain**: Your Experience Cloud domain (e.g., `portal.example.com`)
      - **Upload Path**: The page path (e.g., `/secure-document-upload`)
 
 2. **Create Configuration Record**
@@ -190,11 +190,11 @@ Allowed_File_Extensions__c: pdf,jpg,jpeg,png,doc,docx
 ### Custom Setting Configuration (org-wide URL settings)
 
 ```
-Base_Domain__c: www.helenhomestead.com
+Base_Domain__c: portal.example.com
 Upload_Path__c: /secure-document-upload
 ```
 
-This generates upload URLs like: `https://www.helenhomestead.com/secure-document-upload?token=xxxxx`
+This generates upload URLs like: `https://portal.example.com/secure-document-upload?token=xxxxx`
 
 ## Testing
 

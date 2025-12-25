@@ -1,7 +1,7 @@
 1. URL and file path should be configurable in the custom metadata type.
 2. The dialog had the wrong email (see screenshot)
 3. On the Document Review Panel, we don't have a way to actually see the files that we are approving or rejecting.
-   https://www.helenhomestead.com/secure-document-upload?token=d97f8461-fb9a-b240-96fa-fdbb7a3b24de
+   https://portal.example.com/secure-document-upload?token=d97f8461-fb9a-b240-96fa-fdbb7a3b24de
 
 # New Issues
 
@@ -10,8 +10,8 @@
 ### Base Domain and file path including file name should be configurable.
 
 For example the URL should be broken up into https://{base domain}/{file path}/{file name}
-If the following was the URL: https://www.helenhomestead.com/secure-document-upload?token=d97f8461-fb9a-b240-96fa-fdbb7a3b24de
-The base domain would be www.helenhomestead.com
+If the following was the URL: https://portal.example.com/secure-document-upload?token=d97f8461-fb9a-b240-96fa-fdbb7a3b24de
+The base domain would be portal.example.com
 The file path would be /
 The file name would be secure-document-upload
 Add this to custom settings so that it can be configured by the administrator.
