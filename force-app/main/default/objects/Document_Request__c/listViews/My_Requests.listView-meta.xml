@@ -3,10 +3,12 @@
     <fullName>My_Requests</fullName>
     <columns>NAME</columns>
     <columns>Status__c</columns>
+    <columns>Recipient_Name__c</columns>
     <columns>Recipient_Email__c</columns>
+    <columns>File_Count__c</columns>
     <columns>Source_Object_API_Name__c</columns>
     <columns>Request_Date__c</columns>
-    <columns>Review_Completed_Date__c</columns>
+    <columns>Token_Expiration__c</columns>
     <filterScope>Mine</filterScope>
     <label>My Requests</label>
 </ListView>

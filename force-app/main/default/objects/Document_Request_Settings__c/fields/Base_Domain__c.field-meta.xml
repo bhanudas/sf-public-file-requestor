@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Base_Domain__c</fullName>
+    <description
+  >The base domain for the document upload portal (e.g., portal.example.com). Do not include https:// prefix.</description>
+    <externalId>false</externalId>
+    <inlineHelpText
+  >Enter the domain without https:// (e.g., portal.example.com)</inlineHelpText>
+    <label>Base Domain</label>
+    <length>255</length>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

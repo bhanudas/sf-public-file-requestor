@@ -23,6 +23,13 @@ export default class DocumentReviewPanel extends NavigationMixin(
   rejectionReason = "";
   fileToReject = null;
 
+  // File preview modal state
+  showPreviewModal = false;
+  previewFileUrl = "";
+  previewFileName = "";
+  previewFileId = null;
+  previewDownloadUrl = "";
+
   _wiredDetails;
   _wiredFiles;
 
@@ -194,5 +201,32 @@ export default class DocumentReviewPanel extends NavigationMixin(
 
   showToast(title, message, variant) {
     this.dispatchEvent(new ShowToastEvent({ title, message, variant }));
+  }
+
+  // File preview handlers
+  handleViewFile(event) {
+    const fileId = event.target.dataset.id;
+    const file = this.files.find((f) => f.id === fileId);
+    if (file) {
+      this.previewFileUrl = file.previewUrl;
+      this.previewFileName = file.title;
+      this.previewFileId = fileId;
+      this.previewDownloadUrl = file.downloadUrl;
+      this.showPreviewModal = true;
+    }
+  }
+
+  closePreviewModal() {
+    this.showPreviewModal = false;
+    this.previewFileUrl = "";
+    this.previewFileName = "";
+    this.previewFileId = null;
+    this.previewDownloadUrl = "";
+  }
+
+  handleDownloadFile() {
+    if (this.previewDownloadUrl) {
+      window.open(this.previewDownloadUrl, "_blank");
+    }
   }
 }

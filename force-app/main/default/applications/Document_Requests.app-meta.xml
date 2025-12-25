@@ -5,5 +5,7 @@
   >Manage document collection requests from external recipients</description>
     <tabs>standard-home</tabs>
     <tabs>Document_Request__c</tabs>
+    <tabs>standard-File</tabs>
     <tabs>standard-report</tabs>
+    <tabs>standard-Dashboard</tabs>
 </CustomApplication>

@@ -107,7 +107,18 @@
                         </p>
                       </template>
                     </div>
-                    <div class="slds-col slds-no-flex">
+                    <div
+                      class="slds-col slds-no-flex slds-grid slds-grid_vertical-align-center"
+                    >
+                      <lightning-button-icon
+                        icon-name="utility:preview"
+                        alternative-text="View file"
+                        title="Preview"
+                        onclick={handleViewFile}
+                        data-id={file.id}
+                        class="slds-m-right_x-small"
+                      >
+                      </lightning-button-icon>
                       <lightning-badge
                         label={file.reviewStatus}
                       ></lightning-badge>
@@ -190,6 +201,49 @@
               variant="destructive"
               label="Reject"
               onclick={confirmReject}
+              class="slds-m-left_x-small"
+            >
+            </lightning-button>
+          </footer>
+        </div>
+      </section>
+      <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+
+    <!-- File Preview Modal -->
+    <template lwc:if={showPreviewModal}>
+      <section class="slds-modal slds-fade-in-open slds-modal_large">
+        <div class="slds-modal__container">
+          <header class="slds-modal__header">
+            <lightning-button-icon
+              icon-name="utility:close"
+              alternative-text="Close"
+              onclick={closePreviewModal}
+              class="slds-modal__close"
+            >
+            </lightning-button-icon>
+            <h2 class="slds-modal__title slds-hyphenate">{previewFileName}</h2>
+          </header>
+          <div
+            class="slds-modal__content slds-p-around_none"
+            style="height: 70vh"
+          >
+            <iframe
+              src={previewFileUrl}
+              title="File Preview"
+              style="width: 100%; height: 100%; border: none"
+            ></iframe>
+          </div>
+          <footer class="slds-modal__footer">
+            <lightning-button
+              label="Download"
+              onclick={handleDownloadFile}
+              icon-name="utility:download"
+            ></lightning-button>
+            <lightning-button
+              variant="brand"
+              label="Close"
+              onclick={closePreviewModal}
               class="slds-m-left_x-small"
             >
             </lightning-button>

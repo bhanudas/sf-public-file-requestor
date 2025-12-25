@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Upload_Path__c</fullName>
+    <description
+  >The URL path for the document upload page (e.g., /secure-document-upload). Should start with /.</description>
+    <externalId>false</externalId>
+    <inlineHelpText
+  >Enter the path starting with / (e.g., /secure-document-upload)</inlineHelpText>
+    <label>Upload Path</label>
+    <length>255</length>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>
