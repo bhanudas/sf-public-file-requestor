@@ -3,17 +3,9 @@
     <label>Document Requests</label>
     <description
   >Manage document collection requests from external recipients</description>
-    <formFactors>
-        <formFactor>Large</formFactor>
-    </formFactors>
-    <isNavAutoTempTabsDisabled>false</isNavAutoTempTabsDisabled>
-    <isNavPersonalizationDisabled>false</isNavPersonalizationDisabled>
-    <isNavTabPersistenceDisabled>false</isNavTabPersistenceDisabled>
-    <navType>Standard</navType>
     <tabs>standard-home</tabs>
     <tabs>Document_Request__c</tabs>
     <tabs>standard-File</tabs>
     <tabs>standard-report</tabs>
     <tabs>standard-Dashboard</tabs>
-    <utilityBar>Document_Request_UtilityBar</utilityBar>
 </CustomApplication>
