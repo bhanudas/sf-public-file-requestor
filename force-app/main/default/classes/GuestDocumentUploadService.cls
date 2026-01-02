@@ -331,4 +331,25 @@ public without sharing class GuestDocumentUploadService {
     public String base64Data { get; set; }
     public String contentType { get; set; }
   }
+
+  /**
+   * @description Gets debug settings for public/guest user components
+   * @return DebugSettings wrapper with debug flags
+   */
+  @AuraEnabled(cacheable=true)
+  public static DebugSettings getPublicDebugSettings() {
+    Document_Request_Settings__c settings = Document_Request_Settings__c.getInstance();
+    DebugSettings result = new DebugSettings();
+    result.enableDebug = settings?.Enable_Public_Debug__c == true;
+    return result;
+  }
+
+  public class DebugSettings {
+    @AuraEnabled
+    public Boolean enableDebug { get; set; }
+
+    public DebugSettings() {
+      this.enableDebug = false;
+    }
+  }
 }

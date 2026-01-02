@@ -555,4 +555,25 @@ public with sharing class DocumentRequestService {
 
   public class DocumentRequestException extends Exception {
   }
+
+  /**
+   * @description Gets debug settings for internal components
+   * @return DebugSettings wrapper with debug flags
+   */
+  @AuraEnabled(cacheable=true)
+  public static DebugSettings getInternalDebugSettings() {
+    Document_Request_Settings__c settings = Document_Request_Settings__c.getInstance();
+    DebugSettings result = new DebugSettings();
+    result.enableDebug = settings?.Enable_Internal_Debug__c == true;
+    return result;
+  }
+
+  public class DebugSettings {
+    @AuraEnabled
+    public Boolean enableDebug { get; set; }
+
+    public DebugSettings() {
+      this.enableDebug = false;
+    }
+  }
 }

@@ -2,6 +2,8 @@
 
 A configurable, object-agnostic secure document collection system for Salesforce. Administrators can request documents from external recipients via secure token-based URLs, with files uploaded through an Experience Cloud Guest User portal and a two-phase review workflow.
 
+**Build Status:** ✅ Verified | **Tests:** 119 Passed | **Coverage:** 93% | **Last Verified:** January 2026
+
 ## Features
 
 - **Object-Agnostic** — Works with any standard or custom sObject via configuration
@@ -53,9 +55,16 @@ A configurable, object-agnostic secure document collection system for Salesforce
 
 ### Custom Settings
 
-| Component                      | Description                                     |
-| ------------------------------ | ----------------------------------------------- |
-| `Document_Request_Settings__c` | Portal URL configuration (base domain and path) |
+| Component                      | Description                                                     |
+| ------------------------------ | --------------------------------------------------------------- |
+| `Document_Request_Settings__c` | Portal URL configuration, debug settings (base domain and path) |
+
+**Fields:**
+
+- `Base_Domain__c` — Experience Cloud domain for upload URLs
+- `Upload_Path__c` — Page path for the upload component
+- `Enable_Public_Debug__c` — Enables verbose console logging for guest-facing components
+- `Enable_Internal_Debug__c` — Enables verbose console logging for internal components
 
 ### Custom Objects
 
@@ -81,6 +90,7 @@ A configurable, object-agnostic secure document collection system for Salesforce
 | `documentRequestQuickAction` | Admin creates request from source record (shows actual recipient email) |
 | `guestDocumentUpload`        | Portal upload interface for recipients                                  |
 | `documentReviewPanel`        | Admin review and commit interface with file preview modal               |
+| `docReqLogger`               | Centralized logging utility with debug settings integration             |
 
 ### Lightning Apps
 
@@ -110,6 +120,13 @@ A configurable, object-agnostic secure document collection system for Salesforce
 | `Expiring_Soon`      | Expiring within 3 days               |
 | `My_Requests`        | Current user's requests              |
 | `All_Requests`       | All requests                         |
+
+### Custom Metadata List Views
+
+| List View               | Description                |
+| ----------------------- | -------------------------- |
+| `All_Configurations`    | All configuration records  |
+| `Active_Configurations` | Only active configurations |
 
 ## Installation
 
@@ -187,18 +204,22 @@ Max_Files_Per_Upload__c: 10
 Allowed_File_Extensions__c: pdf,jpg,jpeg,png,doc,docx
 ```
 
-### Custom Setting Configuration (org-wide URL settings)
+### Custom Setting Configuration (org-wide settings)
 
 ```
 Base_Domain__c: portal.example.com
 Upload_Path__c: /secure-document-upload
+Enable_Public_Debug__c: false
+Enable_Internal_Debug__c: false
 ```
 
 This generates upload URLs like: `https://portal.example.com/secure-document-upload?token=xxxxx`
 
+**Debug Settings:** Enable `Enable_Public_Debug__c` to see verbose console logs in the guest upload component. Enable `Enable_Internal_Debug__c` for internal admin components (quick action, review panel).
+
 ## Testing
 
-The project includes comprehensive test coverage (95%+):
+The project includes comprehensive test coverage with **119 tests** and **93%+ org-wide coverage**:
 
 ```bash
 # Run all tests with coverage
@@ -229,6 +250,22 @@ Draft → Sent → Files_Received → Under_Review → Approved/Rejected
                     ↓
               (Token Expires) → Expired
 ```
+
+## Debugging
+
+The project includes a centralized logging system (`docReqLogger`) that provides verbose console output for troubleshooting:
+
+- **Enable Public Debug** — Logs for guest-facing `guestDocumentUpload` component
+- **Enable Internal Debug** — Logs for internal `documentRequestQuickAction` and `documentReviewPanel` components
+
+To enable debugging:
+
+1. Setup → Custom Settings → Document Request Settings → Manage
+2. Edit the Org Default Values
+3. Check `Enable Public Debug` and/or `Enable Internal Debug`
+4. Open browser console to view logs with timestamps, component names, and API call tracking
+
+Log output includes automatic unwrapping of Salesforce proxy objects for readable console inspection.
 
 ## Security Considerations
 

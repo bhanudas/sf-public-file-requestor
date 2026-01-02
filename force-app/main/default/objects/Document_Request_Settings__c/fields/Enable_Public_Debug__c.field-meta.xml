@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Enable_Public_Debug__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description
+  >When enabled, turns on console logging for the public guest document upload component (guestDocumentUpload). Use for troubleshooting public-facing upload issues.</description>
+    <externalId>false</externalId>
+    <inlineHelpText
+  >Enable verbose console logging for the public document upload portal.</inlineHelpText>
+    <label>Enable Public Debug</label>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

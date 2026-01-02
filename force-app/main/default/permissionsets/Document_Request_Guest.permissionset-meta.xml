@@ -13,4 +13,10 @@
         <apexClass>DocumentRequestConfigService</apexClass>
         <enabled>true</enabled>
     </classAccesses>
+    
+    <!-- Custom Setting access for debug settings -->
+    <customSettingAccesses>
+        <enabled>true</enabled>
+        <name>Document_Request_Settings__c</name>
+    </customSettingAccesses>
 </PermissionSet>
